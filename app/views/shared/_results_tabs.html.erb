@@ -1,0 +1,80 @@
+<script>
+  $(document).ready(function() {
+  	$('#myTab a').click(function (e) {
+	  e.preventDefault();
+	  $(this).tab('show');
+	})
+
+    $('#myTab a:first').tab('show');
+  });
+</script>
+
+<ul class="nav nav-tabs" id="myTab">
+<% @result_array.each do |result_array| %>
+<% result_hash = JSON.parse(result_array) %>
+  <li><a href="#<%=result_hash['Symbol']%>"><%= result_hash['Symbol']%></a></li>
+<% end %>
+</ul>
+
+<div class="tab-content">
+<% @result_array.each do |result_array| %>
+<% result_hash = JSON.parse(result_array) %>
+  <div class="tab-pane" id="<%= result_hash['Symbol']%>">
+	<div class='hero-unit'>
+		<h3>results</h3>
+		<table class='table'>
+			<tr>
+				<th>Name</th>
+				<th>Value</th>
+			</tr>
+			<% result_hash.each_with_index do |(key, value), index| %>
+			<tr>
+				<td><%= key %></td>
+				<td>
+					<pre><%= value %></pre>
+				</td>
+			</tr>
+			<% end %>
+
+			<% if result_hash.size == 0 %>
+			<tr>
+				<td>empty</td>
+				<td>empty</td>
+			</tr>
+			<% end %>
+		</table>
+	</div>
+  </div>
+<% end %>	
+</div>
+
+<h3>request</h3>
+<table class='table'>
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr>
+	<% @request_hash.each_with_index do |(key, value), index| %>
+	<tr>
+		<td><%= key %></td>
+		<td>
+			<pre><%= value %></pre>
+		</td>
+	</tr>
+	<% end %>
+</table>
+<h3>response</h3>
+<table class='table'>
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr>
+	<% @response_hash.each_with_index do |(key, value), index| %>
+	<tr>
+		<td><%= key %></td>
+		<td>
+			<pre><%= value %></pre>
+		</td>
+	</tr>
+	<% end %>
+</table>

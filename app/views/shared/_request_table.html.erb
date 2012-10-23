@@ -1,0 +1,15 @@
+<h3>request</h3>
+<table class='table'>
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr>
+	<% @request_hash.each_with_index do |(key, value), index| %>
+	<tr>
+		<td><%= key %></td>
+		<td>
+			<pre><%= value %></pre>
+		</td>
+	</tr>
+	<% end %>
+</table>
