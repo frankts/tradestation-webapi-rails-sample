@@ -28,13 +28,6 @@
 	  	<% id = id + 1 %>
 		<div class='hero-unit'>
 			<h3>results</h3>
-			<% if result_hash.size > 0 %>
-			<%=link_to "balances", sample_account_balances_path(:account_key => result_hash['Key']), :class => 'btn btn-primary', :target => '_blank' %>		
-			<%=link_to "orders", sample_account_orders_path(:account_key => result_hash['Key']), :class => 'btn btn-primary', :target => '_blank' %>		
-			<%=link_to "positions", sample_account_positions_path(:account_key => result_hash['Key']), :class => 'btn btn-primary', :target => '_blank' %>	
-			<% end %>
-			<br/>
-			<br/>
 			<table class='table'>
 				<tr>
 					<th>Name</th>

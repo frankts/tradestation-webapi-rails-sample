@@ -9,6 +9,9 @@ WebAPISample::Application.routes.draw do
   get "sample/account_positions"
   get "sample/account_orders"
   post "sample/symbol_snapshot_request"
+  get "sample/quote"
+  post "sample/quote_request"
+  get "sample/symbol_lookup"
 
   get "authenticate/authorize"
   get "authenticate/callback"

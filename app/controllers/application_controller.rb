@@ -6,9 +6,11 @@ class ApplicationController < ActionController::Base
   before_filter :load_credentials
 
   def load_credentials
-    @client_id = '00000000-0000-0000-0000-000000000000'
-    @client_secret = '00000000-0000-0000-0000-000000000000'
-    @environment = 'https://staging.api.tradestation.com/v2'
+    debugger
+    @config = YAML::load(File.open("#{::Rails.root}/config/tradestation-webapi.yml"))
+    @client_id = @config['client_id']
+    @client_secret = @config['client_secret']
+    @environment = @config['environment']
   end
 
   def https_post(target, form_data)
@@ -34,6 +36,8 @@ class ApplicationController < ActionController::Base
     @request = request
     @response = response
 
+    store_request_response target
+
     return response.body
   end
 
@@ -49,7 +53,7 @@ class ApplicationController < ActionController::Base
     # Headers
    request["Authorization"] = @access_token
    request["Accept"] = "application/json"
-
+   
    begin
      response = https.request(request)
    rescue Exception => e
@@ -59,7 +63,18 @@ class ApplicationController < ActionController::Base
    @request = request
    @response = response
 
+   store_request_response target
+
    return response.body
+  end
+
+  def store_request_response(url)
+    # This is just to document the request and response received by the API call
+    @request_hash = JSON.parse(@request.to_json)
+    @response_hash = JSON.parse(@response.to_json)
+    @result_array = JSON.parse(@response.body).to_a
+
+    @request_hash[:url] = url
   end
 
 end
