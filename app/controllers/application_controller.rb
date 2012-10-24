@@ -6,7 +6,6 @@ class ApplicationController < ActionController::Base
   before_filter :load_credentials
 
   def load_credentials
-    debugger
     @config = YAML::load(File.open("#{::Rails.root}/config/tradestation-webapi.yml"))
     @client_id = @config['client_id']
     @client_secret = @config['client_secret']
