@@ -1,0 +1,35 @@
+<% content_for :javascript  do %>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#dynamic_form').submitWithAjax();
+		$('#form_submit').click(function(){
+			$('#results').html("<div class='row'><div class='span3'><div class='progress progress-striped active'><div class='bar' style='width: 100%;'>Loading...</div></div></div></div>");
+		});
+	});
+</script>
+<% end %>
+<div class="well">
+<h2>Place order</h2>
+<%= form_tag '/sample/order_send', :class=> "form-inline", :id => 'dynamic_form' do %>
+	<div class='row'>
+		<div class='span12'>
+		    <%= text_field_tag 'Symbol', nil, :placeholder=>"e.g. AAPL,MSFT,etc." %>
+		    <%= text_field_tag 'AccountKey', nil %>
+		    <%= text_field_tag 'AssetType', nil, :placeholder=>"e.g. EQ,etc." %>
+		    <%= text_field_tag 'Duration', nil, :placeholder=>"e.g. Day,DYP,etc." %>
+		    <%= text_field_tag 'LimitPrice', nil, :placeholder=>"e.g. 10.00" %>
+		    <%= text_field_tag 'OrderType', nil, :placeholder=>"e.g. Limit, Stop, Market" %>
+		    <%= text_field_tag 'Quantity', nil, :placeholder=>"e.g. 100" %>
+		    <%= text_field_tag 'TradeAction', nil, :placeholder=>"e.g. Buy, Sell, Short, Cover" %>
+    	</div>	
+	</div>
+	<br/>
+	<div class='row'>
+		<div class='span12'>
+    		<%= submit_tag 'Request', :class => 'btn', :id => 'form_submit' %>
+        </div>	
+	</div>
+<% end %>
+</div>
+<div id="results">
+</div>
