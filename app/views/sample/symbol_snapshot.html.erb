@@ -3,7 +3,7 @@
 	$(document).ready(function(){
 		$('#dynamic_form').submitWithAjax();
 		$('#form_submit').click(function(){
-			$('#results').html("Requesting...");
+			$('#results').html("<div class='row'><div class='span3'><div class='progress progress-striped active'><div class='bar' style='width: 100%;'>Loading...</div></div></div></div>");
 		});
 	});
 </script>

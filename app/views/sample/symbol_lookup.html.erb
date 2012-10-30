@@ -1,2 +1,18 @@
+<% content_for :javascript  do %>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#dynamic_form').submitWithAjax();
+		$('#form_submit').click(function(){
+			$('#results').html("<div class='row'><div class='span3'><div class='progress progress-striped active'><div class='bar' style='width: 100%;'>Loading...</div></div></div></div>");
+		});
+	});
+</script>
+<% end %>
 <h2>Symbol lookup</h2>
-<%= render 'shared/results_array_with_tabs' %>
+<%= form_tag '/sample/symbol_lookup_request', :class=> "form-inline", :id => 'dynamic_form' do %>
+    <%= text_field_tag 'symbol', nil, :placeholder=>"Type part of a symbol name" %>
+    <%= select_tag(:category, options_for_select([['Futures','FU'], ['FutureOption', 'FO'],['Stock','S'], ['StockOption', 'SO'], ['Index', 'IDX'], ['CurrencyOption ', 'CO'], ['MutualFund ', 'MF'], ['MoneyMarketFund ', 'MMF'], ['IndexOption ', 'IO'], ['Bond ', 'B'], ['Forex ', 'FX']])) %>
+    <%= submit_tag 'Request', :class => 'btn', :id => 'form_submit' %>
+<% end %>
+<div id="results">
+</div>

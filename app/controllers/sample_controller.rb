@@ -5,11 +5,22 @@ class SampleController < ApplicationController
   end
 
   def symbol_lookup
-    @target_url = "#{@environment}/data/symbols/search/n=msf&c=stock"
+  end
 
+  def symbol_lookup_request
+    if params[:category] != 'FU'
+      @target_url = "#{@environment}/data/symbols/search/n=#{params[:symbol]}&c=#{params[:category]}"
+    else
+      @target_url = "#{@environment}/data/symbols/search/r=#{params[:symbol]}&c=#{params[:category]}"
+    end
+    
     https_get(@target_url)
 
-    @result_array = JSON.parse(@response.body).to_a
+    if @response.code.to_i() < 400
+      @result_array = JSON.parse(@response.body).to_a 
+    else
+      @result_array = @error_array
+    end   
 
     # Display an error if there are no results returned
     if @result_array.size == 0
@@ -17,7 +28,11 @@ class SampleController < ApplicationController
       @result_array[0] = { 'Name' => "error", 'response' => @response.body }
     end
 
-    @tab_name = 'Name'
+    @tab_name = 'Name'    
+
+    respond_to do |format|
+      format.js
+    end
   end
 
   def account_list
@@ -25,7 +40,11 @@ class SampleController < ApplicationController
 
     https_get(@target_url)
 
-    @result_array = JSON.parse(@response.body).to_a
+    if @response.code.to_i() < 400
+      @result_array = JSON.parse(@response.body).to_a 
+    else
+      @result_array = @error_array
+    end   
 
     # Display an error if there are no results returned
     if @result_array.size == 0
@@ -41,7 +60,11 @@ class SampleController < ApplicationController
 
     https_get(@target_url)
 
-    @result_array = JSON.parse(@response.body).to_a
+    if @response.code.to_i() < 400
+      @result_array = JSON.parse(@response.body).to_a 
+    else
+      @result_array = @error_array
+    end   
 
     # Display an error if there are no results returned
     if @result_array.size == 0
@@ -57,7 +80,11 @@ class SampleController < ApplicationController
 
     https_get(@target_url)
 
-    @result_array = JSON.parse(@response.body).to_a
+    if @response.code.to_i() < 400
+      @result_array = JSON.parse(@response.body).to_a 
+    else
+      @result_array = @error_array
+    end   
 
     # Display an error if there are no results returned
     if @result_array.size == 0
@@ -73,7 +100,11 @@ class SampleController < ApplicationController
 
     https_get(@target_url)
 
-    @result_array = JSON.parse(@response.body).to_a
+    if @response.code.to_i() < 400
+      @result_array = JSON.parse(@response.body).to_a 
+    else
+      @result_array = @error_array
+    end   
 
     # Display an error if there are no results returned
     if @result_array.size == 0
@@ -88,29 +119,6 @@ class SampleController < ApplicationController
     @result_hash = session[:webapi]
   end
 
-  def symbol_snapshot    
-  end
-
-  def symbol_snapshot_request
-
-    target_url = "#{@environment}/stream/quote/snapshots/#{params[:symbols]}"
-    
-    https_get(target_url)
-
-    @result_array = @response.body.split("\r\n")
-    @result_array.pop() if @result_array[@result_array.size - 1] == "END"
-
-    # Display an error if there are no results returned
-    if @result_array.size == 0
-      @result_array = Array.new
-      @result_array[0] = { :Symbol => "error", :response => @response.body }.to_json
-    end
-
-    respond_to do |format|
-      format.js
-    end
-  end
-
   def quote
   end
 
@@ -120,7 +128,46 @@ class SampleController < ApplicationController
     
     https_get(target_url)
 
-    @result_array = JSON.parse(@response.body).to_a
+    if @response.code.to_i() < 400
+      @result_array = JSON.parse(@response.body).to_a 
+    else
+      @result_array = @error_array
+    end   
+
+    # Display an error if there are no results returned
+    if @result_array.size == 0
+      @result_array = Array.new
+      @result_array[0] = { :Symbol => "error", :response => @response.body }.to_json
+    end
+
+    @tab_name = 'Symbol'
+
+    respond_to do |format|
+      format.js
+    end
+  end
+
+  def order
+  end
+
+  def order_send
+
+    target_url = "#{@environment}/orders"
+    
+    https_post_with_body(target_url, {:Symbol => params[:Symbol], 
+                                      :AccountKey => params[:AccountKey], 
+                                      :AssetType => params[:AssetType], 
+                                      :Duration => params[:Duration], 
+                                      :LimitPrice => params[:LimitPrice], 
+                                      :OrderType => params[:OrderType], 
+                                      :Quantity => params[:Quantity], 
+                                      :TradeAction => params[:TradeAction]})
+
+    if @response.code.to_i() < 400
+      @result_array = JSON.parse(@response.body).to_a 
+    else
+      @result_array = @error_array
+    end   
 
     # Display an error if there are no results returned
     if @result_array.size == 0

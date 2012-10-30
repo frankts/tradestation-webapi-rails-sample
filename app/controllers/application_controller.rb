@@ -40,6 +40,37 @@ class ApplicationController < ActionController::Base
     return response.body
   end
 
+  def https_post_with_body(target, body)
+    uri = URI.parse(target)
+
+    https = Net::HTTP.new(uri.host, uri.port)
+    https.use_ssl = true
+    https.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    request = Net::HTTP::Post.new(uri.path) 
+
+    # Headers
+    request["Authorization"] = @access_token
+    request["Accept"] = "application/json"
+    request["Content-Type"] = "application/json"
+    request["Content-Length"] = body.to_json().length.to_s
+
+    request.body = body.to_json()
+    
+    begin
+     response = https.request(request)
+    rescue Exception => e
+     response = {:error => e.message, :exception => e.to_s, :body => "error"}
+    end
+
+    @request = request
+    @response = response
+
+    store_request_response target
+
+    return response.body
+  end
+
   def https_get(target)
    uri = URI.parse(target)
 
@@ -71,9 +102,15 @@ class ApplicationController < ActionController::Base
     # This is just to document the request and response received by the API call
     @request_hash = JSON.parse(@request.to_json)
     @response_hash = JSON.parse(@response.to_json)
-    @result_array = JSON.parse(@response.body).to_a
 
     @request_hash[:url] = url
+    @response_hash[:http_code] = @response.code
+
+    # for information purposes, create an array with the errors
+    if @response.code.to_i() >= 400
+      @error_array = Array.new
+      @error_array[0] = JSON.parse(@response.body)
+    end
   end
 
 end

@@ -4,14 +4,16 @@ WebAPISample::Application.routes.draw do
   get "sample/index"
   get "sample/auth_info"
   get "sample/account_list"
-  get "sample/symbol_snapshot"
   get "sample/account_balances", :as => 'sample_account_balances'
   get "sample/account_positions"
   get "sample/account_orders"
-  post "sample/symbol_snapshot_request"
   get "sample/quote"
   post "sample/quote_request"
   get "sample/symbol_lookup"
+  post "sample/symbol_lookup_request"
+
+  get "sample/order"
+  post "sample/order_send"
 
   get "authenticate/authorize"
   get "authenticate/callback"
