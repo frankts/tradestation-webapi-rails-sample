@@ -1,0 +1,17 @@
+<% content_for :javascript  do %>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#dynamic_form').submitWithAjax();
+		$('#form_submit').click(function(){
+			$('#results').html("Requesting...");
+		});
+	});
+</script>
+<% end %>
+<h2>Quote</h2>
+<%= form_tag '/sample/quote_request', :class=> "form-inline", :id => 'dynamic_form' do %>
+    <%= text_field_tag 'symbols', nil, :placeholder=>"e.g. AAPL,MSFT,etc." %>
+    <%= submit_tag 'Request', :class => 'btn', :id => 'form_submit' %>
+<% end %>
+<div id="results">
+</div>

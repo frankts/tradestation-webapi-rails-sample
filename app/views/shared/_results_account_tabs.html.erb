@@ -1,0 +1,95 @@
+<script>
+  $(document).ready(function() {
+  	$('#myTab a').click(function (e) {
+	  e.preventDefault();
+	  $(this).tab('show');
+	})
+
+    $('#myTab a:first').tab('show');
+  });
+</script>
+
+<div class="row">
+<div class="span2">
+<ul class="nav nav-tabs nav-pills nav-stacked" id="myTab">
+<% id = 0 %>
+<% @result_array.each do |result_hash| %>
+  <li><a href="#<%=id%>"><%= result_hash[@tab_name]%></a></li>
+  <% id = id + 1 %>
+<% end %>
+</ul>
+</div>
+
+<div class="span10">
+	<div class="tab-content">
+	<% id = 0 %>
+	<% @result_array.each do |result_hash| %>
+	  <div class="tab-pane" id="<%=id%>">
+	  	<% id = id + 1 %>
+		<div class='hero-unit'>
+			<h3>results</h3>
+			<% if result_hash.size > 0 %>
+			<%=link_to "balances", sample_account_balances_path(:account_key => result_hash['Key']), :class => 'btn btn-primary', :target => '_blank' %>		
+			<%=link_to "orders", sample_account_orders_path(:account_key => result_hash['Key']), :class => 'btn btn-primary', :target => '_blank' %>		
+			<%=link_to "positions", sample_account_positions_path(:account_key => result_hash['Key']), :class => 'btn btn-primary', :target => '_blank' %>	
+			<% end %>
+			<br/>
+			<br/>
+			<table class='table'>
+				<tr>
+					<th>Name</th>
+					<th>Value</th>
+				</tr>
+				<% result_hash.each_with_index do |(key, value), index| %>
+				<tr>
+					<td><%= key %></td>
+					<td>
+						<pre><%= value %></pre>
+					</td>
+				</tr>
+				<% end %>
+
+				<% if result_hash.size == 0 %>
+				<tr>
+					<td>empty</td>
+					<td>empty</td>
+				</tr>
+				<% end %>
+			</table>
+		</div>
+	  </div>
+	<% end %>	
+	</div>
+</div>
+</div>
+
+<h3>request</h3>
+<table class='table'>
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr>
+	<% @request_hash.each_with_index do |(key, value), index| %>
+	<tr>
+		<td><%= key %></td>
+		<td>
+			<pre><%= value %></pre>
+		</td>
+	</tr>
+	<% end %>
+</table>
+<h3>response</h3>
+<table class='table'>
+	<tr>
+		<th>Name</th>
+		<th>Value</th>
+	</tr>
+	<% @response_hash.each_with_index do |(key, value), index| %>
+	<tr>
+		<td><%= key %></td>
+		<td>
+			<pre><%= value %></pre>
+		</td>
+	</tr>
+	<% end %>
+</table>

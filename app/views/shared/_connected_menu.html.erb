@@ -1,0 +1,13 @@
+<li class="active"><a href="<%= root_path %>">logged in as: <strong><%= @userid %></strong></a></li>
+<li class="dropdown">
+	<a class="dropdown-toggle" data-toggle="dropdown" href="#">Services<b class="caret"></b></a>							
+	<ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
+		<li><a tabindex="-1" href="<%= sample_account_list_path%>">Account List</a></li>
+		<li><a tabindex="-1" href="<%= sample_symbol_lookup_path%>">Symbol Lookup</a></li>
+		<li><a tabindex="-1" href="<%= sample_symbol_snapshot_path%>">Symbol Snapshot</a></li>
+		<li><a tabindex="-1" href="<%= sample_quote_path%>">Quote</a></li>
+		<li class="divider"></li>
+		<li><a tabindex="-1" href="<%= sample_auth_info_path%>">Auth Info</a></li>
+	</ul>
+</li>
+<li><a href="<%= authenticate_logout_path %>">Logout</a></li>

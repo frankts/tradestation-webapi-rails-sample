@@ -1,0 +1,26 @@
+<div class='hero-unit'>
+	<h3>results</h3>
+	<table class='table'>
+		<tr>
+			<th>Name</th>
+			<th>Value</th>
+		</tr>
+		<% if @result_hash != nil && @result_hash.size > 0 %>
+		<% @result_hash.each_with_index do |(key, value), index| %>
+		<tr>
+			<td><%= key %></td>
+			<td>
+				<pre><%= value %></pre>
+			</td>
+		</tr>
+		<% end %>
+		<% end %>
+
+		<% if @result_hash.size == 0 %>
+		<tr>
+			<td>empty</td>
+			<td>empty</td>
+		</tr>
+		<% end %>
+	</table>
+</div>

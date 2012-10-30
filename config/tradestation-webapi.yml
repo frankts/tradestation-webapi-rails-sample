@@ -1,0 +1,3 @@
+client_id: '0000000-0000-0000-0000-000000000000'
+client_secret: '0000000-0000-0000-0000-000000000000'
+environment: 'https://staging.api.tradestation.com/v2'
